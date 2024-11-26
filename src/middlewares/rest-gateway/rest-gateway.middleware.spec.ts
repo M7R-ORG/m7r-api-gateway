@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ConfigService } from '@nestjs/config';
-import { RestProxyMiddleware } from './rest.gateway.middleware';
+import { RestProxyMiddleware } from './rest-gateway.middleware';
 
 jest.mock('http-proxy-middleware', () => ({
   createProxyMiddleware: jest.fn(() => jest.fn()),
