@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { NextFunction, Request, Response } from 'express';
 import { createProxyMiddleware, RequestHandler } from 'http-proxy-middleware';
 import { ClientRequest } from 'http';
-import { JwtService } from 'src/jwt/jwt.service';
+import { JwtService } from '../../jwt/jwt.service';
 
 @Injectable()
 export class RestProxyMiddleware implements NestMiddleware {
