@@ -13,6 +13,9 @@ FROM node:20-alpine
 
 WORKDIR /app
 
-COPY --from=builder /app/dist/main.js ./
+COPY package*.json ./
+RUN npm ci --omit=dev
 
-CMD ["node", "main.js"]
+COPY --from=builder /app/dist ./dist
+
+CMD ["node", "dist/main"]
