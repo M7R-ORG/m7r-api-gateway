@@ -14,9 +14,3 @@ services:
       CHAT_SERVICE_WS_URL: 'http://147.45.78.164:8083'
     ports:
       - '8080:8080'
-    networks:
-      - app-network
-
-networks:
-  app-network:
-    external: true
