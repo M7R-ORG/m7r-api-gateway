@@ -1,13 +1,18 @@
-FROM node:20
+FROM node:20-alpine AS builder
 
 WORKDIR /app
 
 COPY package*.json ./
-
-RUN npm i
+RUN npm ci
 
 COPY . .
-
 RUN npm run build
 
-CMD [ "npm", "run", "start" ]
+
+FROM node:20-alpine
+
+WORKDIR /app
+
+COPY --from=builder /app/dist/main.js ./
+
+CMD ["node", "main.js"]
