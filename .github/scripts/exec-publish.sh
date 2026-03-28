@@ -1,3 +1,5 @@
+set -euo pipefail
+
 # image name
 IMAGE_NAME="${DOCKER_USERNAME}/${DOCKER_IMAGE_NAME}"
 
