@@ -4,11 +4,13 @@ import config from './config/app.config';
 import { RestProxyMiddleware } from './middlewares/rest-gateway/rest-gateway.middleware';
 import { WSProxyMiddleware } from './middlewares/ws-gateway/ws-gateway.middleware';
 import { TimerMiddleware } from './middlewares/timer.middleware';
-import { JwtService } from './jwt/jwt.service';
+import { JwtModule } from './jwt/jwt.module';
 
 @Module({
-  imports: [ConfigModule.forRoot({ isGlobal: true, load: [config] })],
-  providers: [JwtService],
+  imports: [
+    JwtModule,
+    ConfigModule.forRoot({ isGlobal: true, load: [config] }),
+  ],
 })
 export class ApiGatewayModule {
   configure(consumer: MiddlewareConsumer) {
