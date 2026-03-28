@@ -1,3 +1,5 @@
+set -euo pipefail
+
 npm i jest
 
 npm i eslint

@@ -1,3 +1,5 @@
+set -euo pipefail
+
 # connect to ssh
 mkdir -p ~/.ssh/
 echo "${SSH_PRIVATE_KEY}" >>~/.ssh/ssh-key.pem
