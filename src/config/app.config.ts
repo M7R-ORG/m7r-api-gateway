@@ -1,7 +1,11 @@
 export default (): Config => ({
   app: {
     port: parseInt(process.env.APP_PORT),
-    allowedOrigins: [process.env.ALLOWED_ORIGIN_URL, 'http://127.0.0.1:3000'],
+    allowedOrigins: [
+      process.env.ALLOWED_ORIGIN_URL,
+      'http://127.0.0.1:3000',
+      'http://localhost:3000',
+    ],
   },
   auth: {
     secret: process.env.JWT_SECRET_KEY,
