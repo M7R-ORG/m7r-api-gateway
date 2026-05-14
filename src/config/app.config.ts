@@ -20,6 +20,7 @@ export default (): Config => ({
       ['/api/chat']: process.env.CHAT_SERVICE_API_URL,
       ['/api/notifications']: process.env.NOTIFICATIONS_SERVICE_API_URL,
       ['/api/ai']: process.env.AI_SERVICE_API_URL,
+      ['/api/files']: process.env.FILES_SERVICE_API_URL,
     },
     ws: {
       ['/signalR/chat']: process.env.CHAT_SERVICE_WS_URL,
