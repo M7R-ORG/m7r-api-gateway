@@ -29,7 +29,10 @@ export class RestProxyMiddleware implements NestMiddleware {
             proxyReq.setHeader('x-account-role', jwtPayload?.role);
           }
 
-          if (req.body) {
+          const contentType = req.headers['content-type'] || '';
+          const isMultipart = contentType.startsWith('multipart/');
+
+          if (req.body && !isMultipart) {
             const bodyData = JSON.stringify(req.body);
             proxyReq.setHeader('Content-Length', Buffer.byteLength(bodyData));
             proxyReq.write(bodyData);
