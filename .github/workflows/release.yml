@@ -25,7 +25,8 @@ jobs:
       - uses: actions/checkout@v4
       - name: Deploy step
         env:
-          PATH_TO_COMPOSE_FILE: ${{ secrets.PATH_TO_COMPOSE_FILE }}
+          PROJECT_PATH: ${{ secrets.PROJECT_PATH }}
+          GITHUB_REPO_NAME: ${{ github.event.repository.name }}
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           SSH_HOST: ${{ secrets.SSH_HOST }}
           SSH_USER: ${{ secrets.SSH_USER }}
