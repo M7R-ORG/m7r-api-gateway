@@ -18,6 +18,7 @@ EOF
 scp -i ~/.ssh/ssh-key.pem docker-compose.yaml "${CONNECTION_STR}:${TARGET_DIR}"
 
 ssh -i ~/.ssh/ssh-key.pem $CONNECTION_STR <<EOF
+  set -e
   cd ${TARGET_DIR}
   docker-compose down
   docker-compose pull
