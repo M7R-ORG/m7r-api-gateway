@@ -1,9 +1,12 @@
 import { Injectable, NestMiddleware } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { NextFunction, Request, Response } from 'express';
+import { NextFunction, Response } from 'express';
 import { createProxyMiddleware, RequestHandler } from 'http-proxy-middleware';
 import { ClientRequest } from 'http';
 import { JwtService } from '../../jwt/jwt.service';
+import { RequestWithIdentity } from './rest-gateway.types';
+
+export const IDENTITY_HEADERS = ['x-account-id', 'x-account-role'];
 
 @Injectable()
 export class RestProxyMiddleware implements NestMiddleware {
@@ -20,13 +23,12 @@ export class RestProxyMiddleware implements NestMiddleware {
       router,
       pathRewrite: (path) => path.replace(/^\/api\/[^\/]+/, '/api'),
       on: {
-        proxyReq: (proxyReq: ClientRequest, req: Request) => {
-          const accessToken = req.headers.authorization;
-          const jwtPayload = this.jwt.getPayload(accessToken);
+        proxyReq: (proxyReq: ClientRequest, req: RequestWithIdentity) => {
+          const payload = req.jwtPayload;
 
-          if (jwtPayload) {
-            proxyReq.setHeader('x-account-id', jwtPayload?.id);
-            proxyReq.setHeader('x-account-role', jwtPayload?.role);
+          if (payload) {
+            proxyReq.setHeader('x-account-id', String(payload.id));
+            proxyReq.setHeader('x-account-role', String(payload.role));
           }
 
           const contentType = req.headers['content-type'] || '';
@@ -45,7 +47,13 @@ export class RestProxyMiddleware implements NestMiddleware {
     });
   }
 
-  use(req: Request, res: Response, next: NextFunction) {
+  use(req: RequestWithIdentity, res: Response, next: NextFunction) {
+    for (const header of IDENTITY_HEADERS) {
+      delete req.headers[header];
+    }
+
+    req.jwtPayload = this.jwt.getPayload(req.headers.authorization);
+
     this.proxy(req, res, next);
   }
 }
