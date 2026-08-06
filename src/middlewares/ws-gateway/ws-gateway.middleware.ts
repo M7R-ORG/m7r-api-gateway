@@ -4,7 +4,11 @@ import { NextFunction, Response } from 'express';
 import { ClientRequest } from 'http';
 import { createProxyMiddleware, RequestHandler } from 'http-proxy-middleware';
 import { JwtService } from '../../jwt/jwt.service';
-import { IDENTITY_HEADERS } from '../rest-gateway/rest-gateway.middleware';
+import {
+  ACCOUNT_ID_HEADER,
+  ACCOUNT_ROLE_HEADER,
+  IDENTITY_HEADERS,
+} from '../../common/common.constants';
 import { RequestWithIdentity } from '../rest-gateway/rest-gateway.types';
 
 @Injectable()
@@ -27,8 +31,8 @@ export class WSProxyMiddleware implements NestMiddleware {
           const payload = req.jwtPayload;
 
           if (payload) {
-            proxyReq.setHeader('x-account-id', String(payload.id));
-            proxyReq.setHeader('x-account-role', String(payload.role));
+            proxyReq.setHeader(ACCOUNT_ID_HEADER, String(payload.id));
+            proxyReq.setHeader(ACCOUNT_ROLE_HEADER, String(payload.role));
           }
         },
       },
