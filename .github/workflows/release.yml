@@ -15,6 +15,7 @@ jobs:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
           DOCKER_IMAGE_NAME: ${{ secrets.DOCKER_IMAGE_NAME }}
+          IMAGE_TAG: ${{ github.event.release.tag_name }}
         run: bash ./.github/scripts/exec-publish.sh
 
   deploy:
@@ -22,12 +23,10 @@ jobs:
     needs: publish
 
     steps:
-      - uses: actions/checkout@v4
-      - name: Deploy step
-        env:
-          PROJECT_PATH: ${{ secrets.PROJECT_PATH }}
-          GITHUB_REPO_NAME: ${{ github.event.repository.name }}
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          SSH_HOST: ${{ secrets.SSH_HOST }}
-          SSH_USER: ${{ secrets.SSH_USER }}
-        run: bash ./.github/scripts/exec-deploy.sh
+      - name: Trigger k8s deploy
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.DISPATCH_TOKEN }}
+          repository: M7R-ORG/m7r-general-service
+          event-type: service-released
+          client-payload: '{"service": "${{ secrets.DOCKER_IMAGE_NAME }}", "tag": "${{ github.event.release.tag_name }}"}'
