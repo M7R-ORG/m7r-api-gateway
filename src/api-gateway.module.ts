@@ -5,10 +5,12 @@ import { RestProxyMiddleware } from './middlewares/rest-gateway/rest-gateway.mid
 import { WSProxyMiddleware } from './middlewares/ws-gateway/ws-gateway.middleware';
 import { TimerMiddleware } from './middlewares/timer.middleware';
 import { JwtModule } from './jwt/jwt.module';
+import { HealthModule } from './health/health.module';
 
 @Module({
   imports: [
     JwtModule,
+    HealthModule,
     ConfigModule.forRoot({ isGlobal: true, load: [config] }),
   ],
 })
